@@ -1,0 +1,40 @@
+application:
+  subdomain: razzia
+  multi_instance: false
+  # Razzia has a manager login (MANAGER_PASSWORD injected as a random secret)
+  # but no self-service signup for visitors: players join games without accounts.
+  # Fixed account + injected random password -> keep platform auth as first line
+  # (part-db / wiki-go precedent), no public_path.
+  upstreams:
+    - location: /package-licenses/
+      backend: file:///lzcapp/pkg/content/licenses/
+    - location: /
+      backend: http://razzia:3000/
+
+services:
+  razzia:
+    # upstream: ralex91/razzia:4.0.2
+    image: docker.1ms.run/ralex91/razzia:4.0.2
+    environment:
+      - TZ=Asia/Shanghai
+      - MANAGER_PASSWORD={{PASSWORD_manager_password}}
+      # JWT_SECRET: 32+ chars. Pin to a stable secret so sessions survive
+      # container rebuilds (koillection precedent).
+      - JWT_SECRET={{PASSWORD_jwt_secret}}
+    binds:
+      # Quizzes / results / media / branding (auto-created on first run)
+      - /lzcapp/var/mutdata:/app/config
+usage: |
+  Razzia 是一个自托管的答题竞赛平台（Kahoot! 的开源替代），适合小型现场活动：
+  主持人在网页上出题，玩家用手机扫码加入房间实时抢答。
+
+  使用方法：
+  1. 打开应用，用「主持人密码」（部署参数中已随机生成，可修改）登录管理界面。
+  2. 在管理界面创建题库（支持图片/媒体题），然后开始游戏。
+  3. 玩家用手机浏览器打开同一地址，输入房间号与昵称即可加入，无需注册账号。
+  4. 题库、成绩与品牌素材保存在 /lzcapp/var/mutdata，卸载应用会一并删除，请定期备份。
+
+  说明：
+  - 本包未做实机验证，功能以官方文档为准：https://github.com/Ralex91/Razzia/blob/main/docs/configuration.md
+  - 主持人界面经平台入口鉴权保护；游戏房间对加入者开放（这是产品形态）。
+  - 许可证 MIT，随包分发，见 /package-licenses/。

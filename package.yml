@@ -1,0 +1,18 @@
+package: community.lazycat.app.razzia
+name: Razzia
+version: 4.0.2
+description: "Self-hosted quiz platform for small events: live games, media questions and an editor, alternative to Kahoot!."
+min_os_version: "1.5.0"
+homepage: https://github.com/Ralex91/Razzia
+author: Ralex91
+license: MIT
+permissions:
+  required:
+    - net.internet
+locales:
+  zh:
+    name: Razzia
+    description: "自托管答题竞赛平台：现场多人实时抢答，支持媒体题、题库编辑器，Kahoot! 的开源替代。"
+  en:
+    name: Razzia
+    description: "Self-hosted quiz platform for small events: live games, media questions and an editor, alternative to Kahoot!."
