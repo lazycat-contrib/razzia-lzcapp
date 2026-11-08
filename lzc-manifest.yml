@@ -17,7 +17,7 @@ services:
     image: docker.1ms.run/ralex91/razzia:4.0.2
     environment:
       - TZ=Asia/Shanghai
-      - MANAGER_PASSWORD={{PASSWORD_manager_password}}
+      - MANAGER_PASSWORD={{PASSWORD_manager_pw}}
       # JWT_SECRET: 32+ chars. Pin to a stable secret so sessions survive
       # container rebuilds (koillection precedent).
       - JWT_SECRET={{PASSWORD_jwt_secret}}
